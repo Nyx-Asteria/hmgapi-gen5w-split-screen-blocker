@@ -26,7 +26,8 @@ public final class Entry extends ModEntry {
     /** RightScreenHome.odex builds checked to have these methods and the tab field, with the same code */
     static final java.util.Set<String> BUILDS = new java.util.HashSet<String>(java.util.Arrays.asList(
             "cc1bd5131bee221ea3b5ed24a1c1d31a",   // Hyundai US 260507: Ioniq 6 (CEEV)
-            "7b84ed639e85a711c4a9f2c78e33acf4"    // Kia US 260507: Sportage, Niro, Telluride, Carnival and others
+            "7b84ed639e85a711c4a9f2c78e33acf4",   // Kia US 260507: Sportage, Niro, Telluride, Carnival and others
+            "bd97b438aeb3d9c77510b5e2da4234f7"    // Kia K5 DL322 US 260507
     ));
     static String odex = "/system/app/RightScreenHome.odex";
     static final int GONE = 8;

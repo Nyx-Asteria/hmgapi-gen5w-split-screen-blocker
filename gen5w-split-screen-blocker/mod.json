@@ -7,7 +7,7 @@
     "DeFlight, LLC"
   ],
   "license": "MIT",
-  "description": "Removes the right-hand split screen and its slide-out tab from every screen. To turn it off: in HMG-API, open Mods, pick Gen5W Split Screen Blocker, switch it off and tap Apply changes. The split screen comes back at the next screen change, even if HMG-API shows Restart needed. To turn it back on: switch it on, tap Apply changes, then tap Restart unit. Runs only on the software builds it was checked on (Ioniq 6 and Kia US 260507); on any other build it changes nothing.",
+  "description": "Removes the right-hand split screen and its slide-out tab from every screen. To turn it off: in HMG-API, open Mods, pick Gen5W Split Screen Blocker, switch it off and tap Apply changes. The split screen comes back at the next screen change, even if HMG-API shows Restart needed. To turn it back on: switch it on, tap Apply changes, then tap Restart unit. Runs only on the software builds it was checked on (Hyundai Ioniq 6, Kia Sportage, and Kia K5); on any other build it changes nothing.",
   "hooks": {
     "jar": "hooks.jar",
     "entry": "com.deflight.splitscreenblocker.hooks.Entry"
