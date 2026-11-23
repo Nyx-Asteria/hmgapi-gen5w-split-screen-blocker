@@ -7,7 +7,7 @@ By DeFlight, LLC.
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-0070BA?logo=paypal&logoColor=white)](https://paypal.me/deflight) [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/DeFlight)
 
 > [!IMPORTANT]
-> **Tested on the Hyundai Ioniq 6 and Kia Sportage Hybrid (US) on 260507 software. Unconfirmed on other cars.** See [Compatibility](#compatibility).
+> **Tested on the Hyundai Ioniq 6, Kia Sportage Hybrid, and 2022 Kia K5 (US) on 260507 software. Unconfirmed on other cars.** See [Compatibility](#compatibility).
 
 ## Contents
 
@@ -65,12 +65,15 @@ The split screen comes back at the next screen change, even if HMG-API shows **R
 |---|---|
 | 2025 Hyundai Ioniq 6 Limited (US) | CEEV.USA.0000.V015.012.260507 |
 | 2023 Kia Sportage Hybrid (US) | NQ5HEV.USA.0000.V015.012.260507 |
+| 2022 Kia K5 (US) | DL322.USA.0000.V015.012.260507 |
 
 HMG-API's maps list the Sportage's split-screen build for these Kia US 260507 cars too, not yet tested: Sportage (incl. Hybrid and Plug-in Hybrid), Niro Hybrid and Plug-in Hybrid, Forte, Soul, Seltos, Telluride and Carnival.
 
+HMG-API's maps list the K5's split-screen build for these Kia US 260507 cars too, not yet tested: Sorento, Stinger, Soul, Seltos 2021, Niro 2020–22, Cadenza and Telluride 2020–21.
+
 **Unconfirmed on other cars.**
 
-The method names inside the car's split-screen app change between software builds, so the mod only runs on the exact builds it was checked on: `RightScreenHome.odex` with MD5 `cc1bd5131bee221ea3b5ed24a1c1d31a` (Hyundai Ioniq 6) or `7b84ed639e85a711c4a9f2c78e33acf4` (Kia). On any other build it writes a line to its log and leaves the car alone.
+The method names inside the car's split-screen app change between software builds, so the mod only runs on the exact builds it was checked on: `RightScreenHome.odex` with MD5 `cc1bd5131bee221ea3b5ed24a1c1d31a` (Hyundai Ioniq 6) or `7b84ed639e85a711c4a9f2c78e33acf4` (Kia Sportage) or `bd97b438aeb3d9c77510b5e2da4234f7` (2022 Kia K5). On any other build it writes a line to its log and leaves the car alone.
 
 Tried it on another car or software version, or something doesn't work? Please [open an issue](../../issues/new?template=bug-report.yml). The form asks for your car and its software, the versions, what happened, and a screenshot of the mod's log from the HMG-API app.
 
@@ -109,7 +112,7 @@ HMG-API installs and applies the mod for you. To remove it, uninstall the packag
 
 The mod's hooks run inside the car's split-screen app (`com.mobis.splitscreen.right`):
 
-- **The panel:** requests to open it are dropped. Requests to close it run as usual.
+- **The panel:** requests to open it are dropped. Requests to close it run as usual. The fifth hook, `canShowSSOsd(ZZZ)Z`, denies OSD display permission on recognized builds. The original four hooks alone were insufficient on the 2022 Kia K5 in on-car testing.
 - **The tab:** every request to show it (window `SS_Button_Window`) becomes the car's own request to hide it, and it starts hidden when the app starts.
 - **The app keeps running,** because the car's other apps talk to it.
 - **Nothing on the head unit's system files is changed.** Turning the mod off or removing it is all it takes to go back.

@@ -17,6 +17,7 @@ import java.security.MessageDigest;
  *   show()          makes the panel's view visible
  *   f(boolean, boolean)  setButtonShow: shows or hides the slide-out tab (window SS_Button_Window)
  *   ij()            initButton: creates the tab's window at start
+ *   canShowSSOsd(boolean, boolean, boolean)  permits split-screen OSD display
  * The names are obfuscated and differ between software builds, so nothing is hooked unless
  * the app is one of the exact builds they were checked on.
  */
@@ -26,7 +27,8 @@ public final class Entry extends ModEntry {
     /** RightScreenHome.odex builds checked to have these methods and the tab field, with the same code */
     static final java.util.Set<String> BUILDS = new java.util.HashSet<String>(java.util.Arrays.asList(
             "cc1bd5131bee221ea3b5ed24a1c1d31a",   // Hyundai US 260507: Ioniq 6 (CEEV)
-            "7b84ed639e85a711c4a9f2c78e33acf4"    // Kia US 260507: Sportage, Niro, Telluride, Carnival and others
+            "7b84ed639e85a711c4a9f2c78e33acf4",   // Kia US 260507: Sportage, Niro, Telluride, Carnival and others
+            "bd97b438aeb3d9c77510b5e2da4234f7"    // 2022 Kia K5 DL322 US 260507 (on-car verified)
     ));
     static String odex = "/system/app/RightScreenHome.odex";
     static final int GONE = 8;
@@ -44,7 +46,8 @@ public final class Entry extends ModEntry {
         if (c.getDeclaredMethod("bh", boolean.class).getReturnType() != void.class
                 || c.getDeclaredMethod("show").getReturnType() != void.class
                 || c.getDeclaredMethod("f", boolean.class, boolean.class).getReturnType() != boolean.class
-                || c.getDeclaredMethod("ij").getReturnType() != boolean.class) {
+                || c.getDeclaredMethod("ij").getReturnType() != boolean.class
+                || c.getDeclaredMethod("canShowSSOsd", boolean.class, boolean.class, boolean.class).getReturnType() != boolean.class) {
             mod.log("split-screen app looks different: nothing changed");
             return;
         }
@@ -84,6 +87,14 @@ public final class Entry extends ModEntry {
                 if (v != null) v.getClass().getMethod("setVisibility", int.class).invoke(v, GONE);
             }
         });
+        // deny split-screen OSD display permission on recognized builds
+            Hooks.findAndHookMethod(BASE, app.classLoader, "canShowSSOsd",
+                    boolean.class, boolean.class, boolean.class, new MethodHook() {
+                @Override
+                protected void beforeHookedMethod(Param p) {
+                    if (mod.enabled()) p.setResult(Boolean.FALSE);
+                }
+            });
         mod.log("split screen and its tab are off");
     }
 
