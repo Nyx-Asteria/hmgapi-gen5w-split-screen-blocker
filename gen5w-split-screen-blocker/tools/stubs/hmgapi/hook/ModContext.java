@@ -3,4 +3,5 @@ package hmgapi.hook;
 public final class ModContext {
     public void log(String message) {}
     public boolean enabled() { return true; }
+    public String settingString(String key, String fallback) { return fallback; }
 }

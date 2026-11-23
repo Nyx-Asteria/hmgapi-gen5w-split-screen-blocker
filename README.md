@@ -1,137 +1,171 @@
+<div align="center">
+
 # Gen5W Split Screen Blocker
 
-An [HMG-API](https://github.com/Open-HMG/HMG-API) mod that removes the right-hand split screen from your car's head unit, along with the slide-out tab on the right edge of the screen. On the car it's called **Gen5W Split Screen Blocker**.
+**Your entire screen. Your choice.**
 
-By DeFlight, LLC.
+Hide the factory split-screen overlay on compatible Hyundai and Kia Gen5W head units — with an optional side arrow for native navigation.
 
-[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-0070BA?logo=paypal&logoColor=white)](https://paypal.me/deflight) [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/DeFlight)
+[![Version](https://img.shields.io/badge/version-1.2.0-3b82f6?style=flat-square)](gen5w-split-screen-blocker/mod.json)
+[![HMG-API](https://img.shields.io/badge/HMG--API-%E2%89%A5%201.0.0-2563eb?style=flat-square)](https://github.com/Open-HMG/HMG-API)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Gen5W-64748b?style=flat-square)](#compatibility)
 
-> [!IMPORTANT]
-> **Tested on the Hyundai Ioniq 6 and Kia Sportage Hybrid (US) on 260507 software. Unconfirmed on other cars.** See [Compatibility](#compatibility).
+[Features](#features) · [Compatibility](#compatibility) · [Installation](#installation) · [Settings](#settings) · [Technical details](#technical-details)
 
-## Contents
+</div>
 
-- [What it does](#what-it-does)
-- [Turning it on and off](#turning-it-on-and-off)
-- [Good to know](#good-to-know)
-- [Requirements](#requirements) · [Compatibility](#compatibility) · [Install](#install)
-- [How it works](#how-it-works)
-- [Building](#building)
-- [Support](#support)
+---
 
-## What it does
+## Overview
 
-| On the car | With the mod on |
-|---|---|
-| Slide-out tab on the right edge | Gone from every screen |
-| Right-hand split screen | Never opens |
-| Everything else on the head unit | Unchanged |
+The factory Gen5W interface reserves the right-hand side of the display for a split-screen panel. **Gen5W Split Screen Blocker** prevents that overlay from appearing, giving the main interface the full display area.
 
-There's nothing to set up. The mod has no settings page and no tile in the app menu.
+Prefer keeping the little arrow on the right edge for the car's navigation view? You can enable that independently without restoring the split-screen overlay.
 
-## Turning it on and off
+This is a community-maintained fork of [DeFlight's original project](https://github.com/DeFlight/hmgapi-gen5w-split-screen-blocker), built for [HMG-API](https://github.com/Open-HMG/HMG-API).
 
-Use the mod's switch in the HMG-API app.
+## Features
 
-**To turn it off:**
+- **Full-screen interface** — blocks the factory split-screen OSD while the mod is enabled.
+- **Optional navigation arrow** — keep the right-edge arrow for native navigation, without enabling the split-screen overlay.
+- **Clean default** — the arrow is hidden unless you explicitly enable it.
+- **HMG-API integration** — manage the mod and its setting through the HMG-API app.
+- **Firmware safeguards** — hooks run only for recognized `RightScreenHome.odex` signatures.
 
-1. In HMG-API, open **Mods** and pick **Gen5W Split Screen Blocker**.
-2. Switch it off and tap **Apply changes**.
+### How the options behave
 
-The split screen comes back at the next screen change, even if HMG-API shows **Restart needed**.
+| Mod | Enable navigation arrow | Split-screen overlay | Side arrow |
+| :--- | :--- | :--- | :--- |
+| **On** | **Off** (default) | Blocked | Hidden |
+| **On** | **On** | Blocked | Available for native navigation |
+| **Off** | Any | Factory behavior | Factory behavior |
 
-**To turn it back on:**
-
-1. Switch it on and tap **Apply changes**.
-2. Tap **Restart unit**.
-
-## Good to know
-
-- **The car's split-screen settings** are still in the car's menus, but they have no effect while the mod is on.
-- **Side panel pages from other HMG-API mods** live in the split screen, so they can't be seen while this mod is on.
-- **After a car software update,** HMG-API has to be installed again, and this mod stays inactive until it has a build for the new software.
-- **Removing the mod** brings the split screen and its tab back after a restart.
-
-## Requirements
-
-- A car with a **Gen5W** navigation head unit. Tested on the cars listed under [Compatibility](#compatibility); unconfirmed on other cars.
-- **[HMG-API](https://github.com/Open-HMG/HMG-API)** installed ([Installing HMG-API](https://github.com/Open-HMG/HMG-API/wiki/Installing-HMG-API)), with its hooks on for your car. The top bar of the HMG-API app shows whether they are.
+> [!NOTE]
+> The navigation-only arrow behavior was observed on a **2022 Kia K5** during hook-isolation testing. Behavior on other vehicles has not yet been confirmed. The new fork configuration itself still needs an on-car test.
 
 ## Compatibility
 
-**Tested:**
+### Firmware support
 
-| Car | Firmware |
-|---|---|
-| 2025 Hyundai Ioniq 6 Limited (US) | CEEV.USA.0000.V015.012.260507 |
-| 2023 Kia Sportage Hybrid (US) | NQ5HEV.USA.0000.V015.012.260507 |
+| Vehicle | Software version | Verification |
+| :--- | :--- | :--- |
+| **2022 Kia K5 (US)** | `DL322.USA.0000.V015.012.260507` | Fifth-hook behavior tested on-car |
+| 2023 Kia Sportage Hybrid (US) | `NQ5HEV.USA.0000.V015.012.260507` | Original upstream mod tested; **this fork untested** |
+| 2025 Hyundai Ioniq 6 Limited (US) | `CEEV.USA.0000.V015.012.260507` | Original upstream mod tested; **this fork untested** |
 
-HMG-API's maps list the Sportage's split-screen build for these Kia US 260507 cars too, not yet tested: Sportage (incl. Hybrid and Plug-in Hybrid), Niro Hybrid and Plug-in Hybrid, Forte, Soul, Seltos, Telluride and Carnival.
+The mod checks the MD5 of `/system/app/RightScreenHome.odex` before installing any hooks:
 
-**Unconfirmed on other cars.**
+<details>
+<summary><strong>Recognized firmware signatures</strong></summary>
 
-The method names inside the car's split-screen app change between software builds, so the mod only runs on the exact builds it was checked on: `RightScreenHome.odex` with MD5 `cc1bd5131bee221ea3b5ed24a1c1d31a` (Hyundai Ioniq 6) or `7b84ed639e85a711c4a9f2c78e33acf4` (Kia). On any other build it writes a line to its log and leaves the car alone.
+| Firmware family | MD5 |
+| :--- | :--- |
+| Kia K5 (DL322) | `bd97b438aeb3d9c77510b5e2da4234f7` |
+| Kia Sportage-family | `7b84ed639e85a711c4a9f2c78e33acf4` |
+| Hyundai Ioniq 6 | `cc1bd5131bee221ea3b5ed24a1c1d31a` |
 
-Tried it on another car or software version, or something doesn't work? Please [open an issue](../../issues/new?template=bug-report.yml). The form asks for your car and its software, the versions, what happened, and a screenshot of the mod's log from the HMG-API app.
+</details>
 
-## Install
+Other Kia models may share these firmware builds. **A matching vehicle name alone is not enough**: the installed ODEX must match a recognized signature, and the expected methods must be present.
 
-Install [HMG-API](https://github.com/Open-HMG/HMG-API/wiki/Installing-HMG-API) first. Then download one of these from [Releases](../../releases):
+> [!WARNING]
+> The fifth hook's exact signature has only been verified on the K5. The Hyundai and Sportage-family firmware may need additional compatibility work. If an expected method is missing, this fork will not install its hooks for that build. Do not treat upstream compatibility reports as proof that this version works on those vehicles.
 
-| File | For |
-|---|---|
-| `gen5w-split-screen-blocker-v<version>-hmgapi-usb.zip` | installing from the HMG-API app with a USB drive |
-| `gen5w-split-screen-blocker-v<version>-nemesis-usb.zip` | installing from NEMESIS with a USB drive |
-| `gen5w-split-screen-blocker-v<version>-nemesis-package.zip` | the NEMESIS package itself, for the Package Store or `nemesis install`. Not for unzipping onto a drive |
-| `gen5w-split-screen-blocker-v<version>.zip` | the signed mod on its own |
+## Installation
 
-### With the HMG-API app
+### Requirements
 
-1. Unzip `gen5w-split-screen-blocker-v<version>-hmgapi-usb.zip` onto the top level of a FAT32 or exFAT USB drive, so the drive has `HMGAPI/updates/gen5w-split-screen-blocker-v<version>.zip`.
-2. Plug the drive into the car and install the mod from the updates page in the HMG-API app.
-3. Tap **Apply changes**.
+- A compatible **Gen5W** navigation head unit with recognized firmware.
+- [HMG-API](https://github.com/Open-HMG/HMG-API) installed, with hooks enabled.
+- A signed mod package built for this fork.
 
-To remove it, use **Remove** on Gen5W Split Screen Blocker in the HMG-API app.
+### Install with HMG-API
 
-### With NEMESIS
+1. Obtain the signed **HMG-API USB** package from this fork's [Releases](../../releases), when available.
+2. Extract it to the root of a FAT32 or exFAT USB drive. The resulting path should look like:
 
-1. Unzip `gen5w-split-screen-blocker-v<version>-nemesis-usb.zip` onto the top level of a FAT32 or exFAT USB drive, so the drive has `NEMESIS.data` and the `packages` folder at its top level. Keep only one NEMESIS package on the drive.
-2. Once Android is up, plug the drive into the car and confirm the install of "Gen5W Split Screen Blocker".
-3. Restart the head unit if it asks, then take the drive out.
+   ```text
+   HMGAPI/
+   └── updates/
+       └── gen5w-split-screen-blocker-v<VERSION>.zip
+   ```
 
-HMG-API installs and applies the mod for you. To remove it, uninstall the package in NEMESIS Manager.
+3. Insert the drive into the head unit and install the mod from HMG-API's updates page.
+4. Tap **Apply changes** and restart the head unit.
 
-### After installing
+### Install with NEMESIS
 
-**Restart the head unit.** The tab and the split screen are gone once it's back up.
+If a **NEMESIS USB** release package is provided, extract it to the root of the USB drive, retaining the `NEMESIS.data` file and `packages` directory. Install using NEMESIS, then restart the head unit as directed.
 
-## How it works
+> [!IMPORTANT]
+> **Switching from DeFlight's original mod?** Remove the original before installing this fork. They share a mod ID, and builds signed by different authors are not interchangeable updates. Do not run both versions simultaneously.
 
-The mod's hooks run inside the car's split-screen app (`com.mobis.splitscreen.right`):
+## Settings
 
-- **The panel:** requests to open it are dropped. Requests to close it run as usual.
-- **The tab:** every request to show it (window `SS_Button_Window`) becomes the car's own request to hide it, and it starts hidden when the app starts.
-- **The app keeps running,** because the car's other apps talk to it.
-- **Nothing on the head unit's system files is changed.** Turning the mod off or removing it is all it takes to go back.
+Open **HMG-API → Mods → Gen5W Split Screen Blocker → Settings**.
 
-## Building
+| Setting | Default | What it does |
+| :--- | :--- | :--- |
+| **Enable navigation arrow** | **Off** | Preserves the right-side arrow and its native navigation action while the split-screen overlay remains blocked |
 
-`gen5w-split-screen-blocker/build.sh` builds the hooks and all the release files into `gen5w-split-screen-blocker/out/`. It needs a JDK, Android build-tools, an API 19 `android.jar`, HMG-API's mod SDK, and your own author key; the variables are listed at the top of the script. A build signed with a different author key installs as a different author, so it can't update an install of the official release.
+Changes are applied through HMG-API. If you enable the arrow after it was hidden at startup, **restart the head unit** to give the factory interface a chance to recreate it.
 
-## Support
+To restore the factory split screen entirely, disable the mod in HMG-API and apply the change. A restart may be needed to restore the original interface fully.
 
-Gen5W Split Screen Blocker is free. If it's useful to you, you can leave a tip to support DeFlight's work on it and future mods: **[PayPal](https://paypal.me/deflight)** (one-time, no account needed) or **[GitHub Sponsors](https://github.com/sponsors/DeFlight)** (one-time or monthly, with a GitHub account). Tips are optional and don't unlock anything.
+## Technical details
 
-[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-0070BA?logo=paypal&logoColor=white)](https://paypal.me/deflight) [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/DeFlight)
+This fork uses **three hooks** inside `com.mobis.splitscreen.right`, rather than the original five-hook proposal.
+
+| Hook | Purpose |
+| :--- | :--- |
+| `f(ZZ)Z` | Suppresses requests to show the slide-out arrow when the arrow setting is off |
+| `ij()Z` | Hides the initially created arrow when the arrow setting is off |
+| `canShowSSOsd(ZZZ)Z` | Returns `false` for OSD display permission while the mod is enabled |
+
+The original `bh(Z)V` and `show()V` panel hooks were removed. On the K5, isolated testing showed that `canShowSSOsd(ZZZ)Z` alone prevented the split-screen overlay, while leaving the arrow available for native navigation.
+
+**Safety behavior:** The code checks the ODEX hash and expected method signatures before hooking. Unknown firmware is left unchanged. The hooks only override behavior while the mod is enabled; they do not patch system APKs or ODEX files.
+
+### Build from source
+
+The project lives in [`gen5w-split-screen-blocker/`](gen5w-split-screen-blocker/). Its [`build.sh`](gen5w-split-screen-blocker/build.sh) builds the hook JAR, signed mod archive and HMG-API USB package. NEMESIS packages are produced when its packaging helper is provided.
+
+The build requires a JDK with Java 8 release support, Android API 19 `android.jar`, Android build-tools, HMG-API's signing SDK, and **your own author key**. The script reads:
+
+| Variable | Purpose |
+| :--- | :--- |
+| `ANDROID_JAR` | Android API 19 platform JAR |
+| `BUILD_TOOLS` | Android build-tools directory containing `d8` |
+| `HMGAPI_CP` | Classpath containing `hmgapi.engine.Signing` |
+| `MOD_KEY` | Your HMG-API signing key |
+| `MKNEMESISMOD` | Optional path to HMG-API's NEMESIS packaging helper |
+
+```sh
+cd gen5w-split-screen-blocker
+./build.sh
+```
+
+Generated files are written to `out/`. **Never commit signing keys.**
+
+## Feedback and contributions
+
+Found another compatible vehicle or firmware build? Open an [issue](../../issues) with your vehicle, model year, software version, `RightScreenHome.odex` MD5, and the relevant HMG-API log output. Please distinguish **tested behavior** from firmware-map matches.
+
+Bug reports and contributions are welcome, especially for verifying the fifth hook on Hyundai and Sportage-family builds.
 
 ## Credits
 
-- [Open-HMG/HMG-API](https://github.com/Open-HMG/HMG-API), the mod platform this runs on.
+- **[DeFlight, LLC](https://github.com/DeFlight/hmgapi-gen5w-split-screen-blocker)** — original Split Screen Blocker, foundational hooks, build tooling and documentation.
+- **[Open-HMG](https://github.com/Open-HMG/HMG-API)** — HMG-API platform and tooling.
+- **[Nyx-Asteria](https://github.com/Nyx-Asteria)** — maintenance of this fork, K5 testing and navigation-arrow configuration.
 
-## Disclaimer
+Released under the **[MIT License](LICENSE)**. Original attribution and license terms are retained.
 
-Not affiliated with or endorsed by Hyundai, Kia or Genesis. Modifying your car's head unit is at your own risk.
+---
 
-## License
+<div align="center">
 
-MIT, see [LICENSE](LICENSE).
+<sub>Not affiliated with or endorsed by Hyundai, Kia or Genesis. Head-unit modifications are performed at your own risk.</sub>
+
+</div>

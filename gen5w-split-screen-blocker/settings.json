@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "settings": [
+    {
+      "key": "navigation_arrow",
+      "type": "toggle",
+      "default": false,
+      "title": "Enable navigation arrow",
+      "description": "Keep the side arrow for the car's native navigation view. The split-screen overlay remains blocked.",
+      "apply": "rebuild"
+    }
+  ]
+}

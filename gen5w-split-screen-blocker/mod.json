@@ -1,13 +1,14 @@
 {
   "id": "gen5w-split-screen-blocker",
   "name": "Gen5W Split Screen Blocker",
-  "version": "1.1.0",
+  "version": "1.2.0-rc.1",
   "hmgapi": ">=1.0.0",
   "authors": [
-    "DeFlight, LLC"
+    "Nyx-Asteria",
+    "DeFlight, LLC (original author)"
   ],
   "license": "MIT",
-  "description": "Removes the right-hand split screen and its slide-out tab from every screen. To turn it off: in HMG-API, open Mods, pick Gen5W Split Screen Blocker, switch it off and tap Apply changes. The split screen comes back at the next screen change, even if HMG-API shows Restart needed. To turn it back on: switch it on, tap Apply changes, then tap Restart unit. Runs only on the software builds it was checked on (Ioniq 6 and Kia US 260507); on any other build it changes nothing.",
+  "description": "Blocks the Gen5W right-side split-screen OSD, with an optional navigation-only arrow (off by default). Recognized firmware only; tested on a 2022 Kia K5.",
   "hooks": {
     "jar": "hooks.jar",
     "entry": "com.deflight.splitscreenblocker.hooks.Entry"
