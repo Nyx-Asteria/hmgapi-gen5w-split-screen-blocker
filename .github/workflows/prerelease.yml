@@ -29,6 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Open-HMG/HMG-API
+          ref: daa083717f07565ba16dc8a4d26291b7d68d3bf4
           path: .hmgapi
       - name: Build HMG-API mod SDK
         run: |
@@ -52,7 +53,7 @@ jobs:
           mkdir -p release-assets
           cp gen5w-split-screen-blocker/out/*.zip gen5w-split-screen-blocker/out/SHA256SUMS release-assets/
       - name: Publish prerelease
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'Release '))
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
